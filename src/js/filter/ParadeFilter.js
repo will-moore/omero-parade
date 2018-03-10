@@ -70,6 +70,11 @@ class ParadeFilter extends React.Component {
     render() {
         return(
             <div className="parade_filter">
+                <select
+                    onChange={(event) => {this.handleFilterInput('not', event.target.value)}} >
+                    <option value="-">-</option>
+                    <option value="not">NOT</option>
+                </select>
                 {this.props.name}
                 {this.state.filterParams.map(p => {
                     return <FilterInput
