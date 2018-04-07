@@ -87,6 +87,9 @@ class ParadeFilter extends React.Component {
                 maximum: filterParam.maxima[value]
             });
         }
+        // set new filter value for this column
+        this.props.handleFilterChange(this.props.filterIndex,
+                                      'count', filterParam.minima[value]);
     }
 
     render() {
