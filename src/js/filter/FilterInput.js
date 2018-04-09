@@ -51,14 +51,16 @@ class FilterInput extends React.Component {
             )
         }
         if (this.props.min != undefined && this.props.max != undefined) {
+            // show range slider from min-1 to max+1
             return (
-                <span>
+                <span className={"parade_filterinput_" + param.name}>
                     <span> {this.props.value}</span>
                     <input
                         name={param.name}
                         type='range'
-                        min={this.props.min}
-                        max={this.props.max}
+                        value={this.props.value}
+                        min={this.props.min - 1}
+                        max={this.props.max + 1}
                         onChange={onChange}
                         title={param.title ? param.title : ''}
                     />

@@ -418,5 +418,59 @@ input[type=range].parade:focus::-ms-fill-upper {
 }
 
 .parade_filter_controls {
+  position: relative;
+  min-width: 350px;
   float: left;
+}
+
+/* styles from http://stackoverflow.com/questions/4753946/html5-form-slider-with-two-inputs-possible */
+.parade_filter_controls input[type=range] {
+  pointer-events: none;
+  position: absolute;
+  right: 45px;
+  overflow: hidden;
+  width: 150px;
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+.parade_filter_controls input::-webkit-slider-thumb {
+  pointer-events: all;
+  position: relative;
+  z-index: 1;
+  outline: 0;
+}
+.parade_filter_controls input::-moz-range-thumb {
+  pointer-events: all;
+  position: relative;
+  z-index: 10;
+  -moz-appearance: none;
+  width: 9px;
+}
+.parade_filter_controls input::-moz-range-track {
+  position: relative;
+  z-index: -1;
+  background-color: rgba(0, 0, 0, 1);
+  border: 0;
+}
+.parade_filter_controls input:last-of-type::-moz-range-track {
+  -moz-appearance: none;
+  background: none transparent;
+  border: 0;
+}
+.parade_filter_controls input[type=range]::-moz-focus-outer {
+  border: 0;
+}
+
+/* parade_filterinput_max is generated for FilterInput named 'max' */
+.parade_filterinput_min span {
+  position: absolute;
+  right: 200px;
+  top: 5px;
+}
+
+.parade_filterinput_max span {
+  position: absolute;
+  right: 10px;
+  top: 5px;
 }
