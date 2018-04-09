@@ -88,7 +88,9 @@ def get_script(request, script_name, conn):
         # e.g. {'type': 'Image', 'id': 1}
         # and should return true or false
         f = """(function filter(data, params) {
-            if (isNaN(params.count) || params.count == '') return true;
+            var min_value = parseInt(params.min);
+            var max_value = parseInt(params.max);
+            if (isNaN(min_value) && isNaN(max_value)) return true;
             var table_data = %s;
             if (data.wellId) {
                 var rowIndex = table_data.Well.indexOf(data.wellId);
@@ -96,9 +98,9 @@ def get_script(request, script_name, conn):
                 var rowIndex = table_data.Image.indexOf(data.id);
             }
             var value = table_data[params.column_name][rowIndex];
-            if (params.operator === '=') return value == params.count;
-            if (params.operator === '<') return value < params.count;
-            if (params.operator === '>') return value > params.count;
+            if (isNaN(min_value)) return (value < max_value);
+            if (isNaN(max_value)) return (value > min_value);
+            return (value > min_value && value < max_value);
         })
         """ % json.dumps(table_data)
 
@@ -109,11 +111,10 @@ def get_script(request, script_name, conn):
                           'minima': minima,
                           'maxima': maxima,
                           'histograms': histograms},
-                         {'name': 'operator',
-                          'type': 'text',
-                          'values': ['>', '=', '<'],
-                          'default': '>'},
-                         {'name': 'count',
+                         {'name': 'min',
+                          'type': 'number',
+                          'default': ''},
+                         {'name': 'max',
                           'type': 'number',
                           'default': ''}]
         return JsonResponse(
