@@ -30,6 +30,9 @@ urlpatterns = patterns(
     # GET search results. Use ?query=foo
     url(r'^search/$', views.search, name='parade_search'),
 
+    # Load a whole table into crossfilter.js
+    url(r'^crossfilter/$', views.crossfilter, name='parade_crossfilter'),
+
     # list fields in Plate
     url(r'^api/fields/(?P<plate_id>[0-9]+)/$', views.api_field_list,
         name='parade_fields'),

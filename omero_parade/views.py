@@ -42,6 +42,11 @@ def index(request, **kwargs):
 
 
 @login_required()
+def crossfilter(request, **kwargs):
+    return render(request, "omero_parade/crossfilter.html", {})
+
+
+@login_required()
 def search(request, conn=None, **kwargs):
     """Do a FullText search using text from ?query=text."""
     search = conn.createSearchService()

@@ -20,6 +20,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import SearchApp from './search/SearchApp';
+import CrossFilterApp from './crossfilter/CrossFilterApp';
 import _config from './config'
 
 // Export a function for rendering omero_parade as a centre panel plugin
@@ -40,4 +41,10 @@ function full_page_app(element_id, config) {
     );
 }
 
-export { omero_parade, full_page_app }
+// Crossfilter app
+function crossfilter_app(element_id, config) {
+    Object.assign(_config, config);
+    ReactDOM.render(<CrossFilterApp />, document.getElementById(element_id));
+}
+
+export { omero_parade, full_page_app, crossfilter_app }

@@ -1,0 +1,21 @@
+{% load static %}
+
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'omero_parade/css/parade.css' %}"></link>
+        <script src="{% static 'omero_parade/js/bundle.js' %}"></script>
+    </head>
+
+    <body>
+        <div id="full_page_app"></div>
+    </body>
+
+    <script>
+        omero_parade.crossfilter_app("full_page_app", {
+            dataprovidersUrl: "{% url 'parade_dataproviders' %}",
+            indexUrl: "{% url 'parade_index' %}",
+            staticPrefix: "{% get_static_prefix %}",
+            webgatewayBaseUrl: "{% url 'webgateway' %}",
+        });
+    </script>
+</html>
