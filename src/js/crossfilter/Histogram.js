@@ -3,7 +3,7 @@ import * as dc from "dc";
 import {scaleLinear } from "d3";
 import { ChartTemplate } from "./chartTemplate";
 // import { numberFormat } from "./cxContext";
-import crossfilter from "crossfilter2";
+// import crossfilter from "crossfilter2";
 
 const histogramFunc = (divRef, ndx, dimName) => {
 
@@ -24,6 +24,10 @@ const histogramFunc = (divRef, ndx, dimName) => {
         .xUnits(function(){return number_of_bins})
         .centerBar(true)
         .xAxis();
+    
+    // histogram.on('filtered', function(chart, filter){
+    //     console.log('on filter', filter['0'], filter['1']);
+    // });
     return histogram;
 }
 

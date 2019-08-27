@@ -1,5 +1,5 @@
 import React from "react";
-import "./dc.css";
+// import "./dc.css";
 import * as d3 from "d3";
 
 import crossfilter from "crossfilter2";

@@ -5,7 +5,7 @@ import { css } from "glamor";
 
 const ResetButton = props => {
   const style = css({
-    padding: 10,
+    padding: 4,
     display: "inline",
     cursor:'pointer',
     float:'right',
@@ -14,7 +14,7 @@ const ResetButton = props => {
     }
   });
   return (
-    <span
+    <button
       {...style}
       onClick={() => {
         props.chart.filterAll();
@@ -22,9 +22,29 @@ const ResetButton = props => {
       }}
     >
       reset
-    </span>
+    </button>
   );
 };
+
+const FilterTitle = props => {
+
+    const [filter, setFilter] = React.useState(null);
+
+    if (props.chart) {
+        props.chart.on('filtered', function(chart, filter){
+            setFilter(filter);
+        });
+    }
+
+    return (
+        <label>
+            <span style={{'marginRight': 10}}>{props.title}</span>
+            <span>{filter ? `${filter['0'].toFixed(2)} - ${filter['1'].toFixed(2)}` : ''}</span>
+        </label>
+    )
+}
+
+
 export const ChartTemplate = props => {
     /*
     We render the dc chart using an effect. We want to pass the chart as a prop after the dc call,
@@ -62,7 +82,7 @@ export const ChartTemplate = props => {
     >
     
      <ResetButton chart={chart} /> 
-     <label>{props.title}</label>
+     <FilterTitle title={props.title} chart={chart} /> 
     </div>
   );
 };

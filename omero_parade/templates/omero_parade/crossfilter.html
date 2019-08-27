@@ -6,12 +6,6 @@
         <script src="{% static 'omero_parade/js/bundle.js' %}"></script>
 
         <style>
-            .chartContainer {
-                width: 300px;
-                height: 300px;
-            }
-
-
 
             .dc-chart path.dc-symbol, .dc-legend g.dc-legend-item.fadeout {
   fill-opacity: 0.5;
@@ -260,6 +254,22 @@ div.dc-html-legend {
 .dc-html-legend-container {
   height: inherit; }
 
+      .fullPage {
+        display: flex;
+        flex-direction: row;
+      }
+
+      .leftColumn {
+        width: 310px;
+        margin: 0;
+        padding: 0;
+        background: #eee;
+        border-right: solid #ddd 1px;
+      }
+
+      .centrePanel {
+        flex: 0 1 auto;
+      }
         </style>
     </head>
 
