@@ -18,6 +18,11 @@ const CrossFilterApp = props => {
         if (filters.indexOf(name) > -1) return;
         setFilters(filters.concat(name));
     }
+    const removeFilter = (name) => {
+        console.log('removeFilter()', name);
+        // remove matching item
+        setFilters(filters.filter(f => f !== name));
+    }
     return (
         <DataContext>
             <div className="fullPage">
@@ -26,7 +31,7 @@ const CrossFilterApp = props => {
 
                     {filters.map(filter => (
                         <div key={filter} {...style}>
-                            <Histogram dimName={filter} />
+                            <Histogram dimName={filter} removeChart={removeFilter}/>
                         </div>
                     ))}
                 </div>

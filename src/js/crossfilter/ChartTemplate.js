@@ -53,7 +53,7 @@ export const ChartTemplate = props => {
     By passing the key to the parent div, we get a rerender once the chart is defined. 
     */
   const context = React.useContext(CXContext);
-  const [chart,updateChart] = React.useState(null);
+  const [chart, updateChart] = React.useState(null);
   const ndx = context.ndx;
   const div = React.useRef(null);
   React.useEffect(() => {
@@ -64,8 +64,9 @@ export const ChartTemplate = props => {
 
     // Specify how to clean up after this effect:
     return () => {
-      console.log('cleanup chart');
-      // dimension.dispose()
+      console.log('cleanup chart', newChart);
+      newChart.dimension().dispose();
+      dc.redrawAll();
     };
   }, []); {/*Run this exactly once */}
 
@@ -87,6 +88,7 @@ export const ChartTemplate = props => {
       {...chartStyles}
     >
     
+     <button onClick={() => props.removeChart(props.title)}>X</button>
      <ResetButton chart={chart} /> 
      <FilterTitle title={props.title} chart={chart} /> 
     </div>
