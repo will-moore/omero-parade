@@ -61,7 +61,13 @@ export const ChartTemplate = props => {
 
     newChart.render();
     updateChart(newChart);
-  },1); {/*Run this exactly once */}
+
+    // Specify how to clean up after this effect:
+    return () => {
+      console.log('cleanup chart');
+      // dimension.dispose()
+    };
+  }, []); {/*Run this exactly once */}
 
   const chartStyles  = css({
     width:'100%',

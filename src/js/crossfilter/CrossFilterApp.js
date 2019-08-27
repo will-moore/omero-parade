@@ -2,31 +2,33 @@ import React from 'react';
 import { DataContext } from './DataContext';
 import { Histogram } from './Histogram';
 import { DataTable } from './DataTable';
+import DimensionChooser from './DimensionChooser';
 import { css } from "glamor";
 
 var style = css({
     width: 300,
 });
 
-class CrossFilterApp extends React.Component {
+const CrossFilterApp = props => {
 
-    constructor(props) {
-        super(props);
-        console.log('props', props)
-        console.log('Histogram', Histogram);
+    const [filters, setFilters] = React.useState([]);
+
+    const addFilter = (name) => {
+        // Don't add if already used
+        if (filters.indexOf(name) > -1) return;
+        setFilters(filters.concat(name));
     }
-
-    render() {
-        return (
-            <DataContext>
+    return (
+        <DataContext>
             <div className="fullPage">
                 <div className="leftColumn">
-                    <div {...style}>
-                        <Histogram dimName="Bounding_Box" />
-                    </div>
-                    <div {...style}>
-                        <Histogram dimName="Count" />
-                    </div>
+                    <DimensionChooser addFilter={addFilter} />
+
+                    {filters.map(filter => (
+                        <div key={filter} {...style}>
+                            <Histogram dimName={filter} />
+                        </div>
+                    ))}
                 </div>
                 <div className="centrePanel">
                     <div>
@@ -34,9 +36,8 @@ class CrossFilterApp extends React.Component {
                     </div>
                 </div>
             </div>
-            </DataContext>
-        )
-    }
+        </DataContext>
+    )
 }
 
 export default CrossFilterApp

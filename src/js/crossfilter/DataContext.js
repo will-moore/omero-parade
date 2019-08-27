@@ -31,7 +31,9 @@ export class DataContext extends React.Component {
                 if (c === "DoubleColumn") {
                     numberColumnNames.push(data.data.columns[idx]);
                 }
-            });        
+            });
+
+            this.columns = data.data.columns;
 
             let url = "/webclient/omero_table/189802/csv/?limit=100"
             d3.csv(url)
@@ -44,7 +46,7 @@ export class DataContext extends React.Component {
                 });
 
                 this.ndx = crossfilter(data);
-                this.setState({loading:false,hasNDX:true});
+                this.setState({loading:false, hasNDX:true});
             });
 
         });
@@ -56,7 +58,7 @@ export class DataContext extends React.Component {
             return (<div>Loading...</div>);
         }
         return (
-            <CXContext.Provider value={{ndx:this.ndx}}>
+            <CXContext.Provider value={{ndx:this.ndx, columns: this.columns}}>
                 <div ref={this.parent}>
                     {this.props.children}
                 </div>
