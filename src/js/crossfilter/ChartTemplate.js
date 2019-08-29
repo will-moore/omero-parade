@@ -64,7 +64,6 @@ export const ChartTemplate = props => {
 
     // Specify how to clean up after this effect:
     return () => {
-      console.log('cleanup chart', newChart);
       newChart.dimension().dispose();
       dc.redrawAll();
     };
@@ -78,17 +77,17 @@ export const ChartTemplate = props => {
     '& label':{
       textTransform:'capitalize',
       textDecoration:'underline'
-
     }
-
   })
+  const btnStyle = {float:'right', marginLeft: 5};
   return (
     <div
       ref={div}
       {...chartStyles}
     >
     
-     <button onClick={() => props.removeChart(props.title)}>X</button>
+     <button onClick={() => props.removeChart(props.title)}
+        style={btnStyle}>X</button>
      <ResetButton chart={chart} /> 
      <FilterTitle title={props.title} chart={chart} /> 
     </div>

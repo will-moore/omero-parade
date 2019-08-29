@@ -1,6 +1,7 @@
 import React from 'react';
 import { DataContext } from './DataContext';
-import { Histogram } from './Histogram';
+import { Histogram } from './filters/Histogram';
+import { TextFilter } from './filters/TextFilter';
 import { DataTable } from './DataTable';
 import DimensionChooser from './DimensionChooser';
 import { css } from "glamor";
@@ -13,15 +14,14 @@ const CrossFilterApp = props => {
 
     const [filters, setFilters] = React.useState([]);
 
-    const addFilter = (name) => {
+    const addFilter = (column) => {
         // Don't add if already used
-        if (filters.indexOf(name) > -1) return;
-        setFilters(filters.concat(name));
+        if (filters.find(f => f.name === column.name)) return;
+        setFilters(filters.concat(column));
     }
     const removeFilter = (name) => {
-        console.log('removeFilter()', name);
         // remove matching item
-        setFilters(filters.filter(f => f !== name));
+        setFilters(filters.filter(f => f.name !== name));
     }
     return (
         <DataContext>
@@ -29,11 +29,20 @@ const CrossFilterApp = props => {
                 <div className="leftColumn">
                     <DimensionChooser addFilter={addFilter} />
 
-                    {filters.map(filter => (
-                        <div key={filter} {...style}>
-                            <Histogram dimName={filter} removeChart={removeFilter}/>
-                        </div>
-                    ))}
+                    {filters.map(filter => {
+                        if (filter.type === 'number') {
+                            return (
+                                <div key={filter.name} {...style}>
+                                    <Histogram dimName={filter.name} removeChart={removeFilter}/>
+                                </div>
+                            )
+                        } else {
+                            return <div key={filter.name}>
+                                <TextFilter dimName={filter.name}
+                                    removeChart={removeFilter} />
+                            </div>
+                        }
+                    })}
                 </div>
                 <div className="centrePanel">
                     <div>

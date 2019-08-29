@@ -8,11 +8,14 @@ const DimensionChooser = props => {
     const context = React.useContext(CXContext);
 
     const handleChange = (event) => {
-        props.addFilter(event.target.value);
+        let name = event.target.value;
+        let column = context.columns.find(c => c.name === name);
+        props.addFilter(column);
     }
 
     return (
-        <select value={"--"} onChange={handleChange}>
+        <select value={"--"} onChange={handleChange}
+            style={{margin: 10, width: 'calc(100% - 20px)'}}>
             <option value="--">Add Filter</option>
             {context.columns.map(col => (
                 <option value={col.name} key={col.name}>
