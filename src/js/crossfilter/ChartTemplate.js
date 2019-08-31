@@ -32,7 +32,9 @@ const FilterTitle = props => {
 
     if (props.chart) {
         props.chart.on('filtered', function(chart, filter){
-            setFilter(filter);
+            if (filter && filter.filterType === "RangedFilter") {
+                setFilter(filter);
+            }
         });
     }
 

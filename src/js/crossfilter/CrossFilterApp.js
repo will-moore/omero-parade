@@ -1,6 +1,7 @@
 import React from 'react';
 import { DataContext } from './DataContext';
 import { Histogram } from './filters/Histogram';
+import { GroupFilter } from './filters/GroupFilter';
 import { TextFilter } from './filters/TextFilter';
 import { DataTable } from './DataTable';
 import DimensionChooser from './DimensionChooser';
@@ -39,6 +40,8 @@ const CrossFilterApp = props => {
                         } else {
                             return <div key={filter.name}>
                                 <TextFilter dimName={filter.name}
+                                    removeChart={removeFilter} />
+                                <GroupFilter dimName={filter.name}
                                     removeChart={removeFilter} />
                             </div>
                         }
