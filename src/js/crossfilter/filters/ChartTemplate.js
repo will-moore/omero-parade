@@ -1,5 +1,5 @@
 import React from "react";
-import { CXContext } from "./DataContext";
+import { CXContext } from "../DataContext";
 import * as dc from "dc";
 import { css } from "glamor";
 

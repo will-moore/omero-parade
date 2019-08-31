@@ -3,7 +3,7 @@ import * as dc from "dc";
 import "dc/dc.css";
 
 // import {format as d3Format } from 'd3'
-import { ChartTemplate } from "./chartTemplate";
+import { ChartTemplate } from "./filters/ChartTemplate";
 // import { numberFormat } from "./cxContext";
 import {css} from 'glamor'
 const tableFunc = (divRef, ndx) => {

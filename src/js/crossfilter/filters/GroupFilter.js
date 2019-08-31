@@ -1,6 +1,6 @@
 import React from "react";
 import * as dc from "dc";
-import { ChartTemplate } from "../chartTemplate";
+import { ChartTemplate } from "./ChartTemplate";
 
 const rowChartFunc = (divRef, ndx, dimName) => {
     const chart = dc.rowChart(divRef)

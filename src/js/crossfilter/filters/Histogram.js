@@ -1,7 +1,7 @@
 import React from "react";
 import * as dc from "dc";
 import {scaleLinear } from "d3";
-import { ChartTemplate } from "../chartTemplate";
+import { ChartTemplate } from "./ChartTemplate";
 // import { numberFormat } from "./cxContext";
 // import crossfilter from "crossfilter2";
 
