@@ -1,6 +1,7 @@
 import React from 'react';
 import { DataContext } from './DataContext';
 import { Histogram } from './filters/Histogram';
+import { ScatterPlot } from './filters/ScatterPlot';
 import { GroupFilter } from './filters/GroupFilter';
 import { TextFilter } from './filters/TextFilter';
 import { DataTable } from './DataTable';
@@ -10,6 +11,15 @@ import { css } from "glamor";
 var style = css({
     width: 300,
 });
+var centreStyle = css({
+    display: 'flex',
+    flexDirection: 'column',
+});
+var centrePanelStyle = css({
+    flex: '1 1 auto',
+    overflow: 'auto',
+    height: '50%',
+})
 
 const CrossFilterApp = props => {
 
@@ -47,8 +57,11 @@ const CrossFilterApp = props => {
                         }
                     })}
                 </div>
-                <div className="centrePanel">
-                    <div>
+                <div className="centrePanel" {...centreStyle}>
+                    <div {...centrePanelStyle}>
+                        <ScatterPlot dimName={"Count"} removeChart={removeFilter}/>
+                    </div>
+                    <div {...centrePanelStyle}>
                         <DataTable />
                     </div>
                 </div>
