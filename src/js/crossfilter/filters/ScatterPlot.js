@@ -4,13 +4,13 @@ import {scaleLinear } from "d3";
 import { css } from "glamor";
 import { CXContext } from "../DataContext";
 
-const scatterPlotFunction = (divRef, ndx, dimName) => {
+const scatterPlotFunction = (divRef, ndx, xAxis, yAxis) => {
 
-    var x = ndx.dimension(function(d) {return d[dimName] });
-    var max_value = x.top(1)[0][dimName];
-    var min_value = x.bottom(1)[0][dimName];
+    var x = ndx.dimension(function(d) {return d[xAxis] });
+    var max_value = x.top(1)[0][xAxis];
+    var min_value = x.bottom(1)[0][xAxis];
 
-    var scatterDim = ndx.dimension(function(d) {return [d[dimName], d['Bounding_Box']];});
+    var scatterDim = ndx.dimension(function(d) {return [d[xAxis], d[yAxis]];});
     var sumGroup = scatterDim.group()    
 
     // generate chart
@@ -20,7 +20,8 @@ const scatterPlotFunction = (divRef, ndx, dimName) => {
         .symbolSize(5)
         .nonemptyOpacity(1)
         .clipPadding(10)
-        .yAxisLabel("This is the Y Axis!")
+        .xAxisLabel(xAxis)
+        .yAxisLabel(yAxis)
         .brushOn(false)
         .dimension(scatterDim)
         .group(sumGroup)
@@ -41,7 +42,8 @@ const PlotTemplate = props => {
   const ndx = context.ndx;
   const div = React.useRef(null);
   React.useEffect(() => {
-    const newChart = props.chartFunction(div.current, ndx, props.dimName); // chartfunction takes the ref and does something with it
+    console.log('useEffect', props.xAxis, props.yAxis);
+    const newChart = props.chartFunction(div.current, ndx, props.xAxis, props.yAxis); // chartfunction takes the ref and does something with it
 
     newChart.render();
     updateChart(newChart);
@@ -51,11 +53,11 @@ const PlotTemplate = props => {
       newChart.dimension().dispose();
       dc.redrawAll();
     };
-  }, []); {/*Run this exactly once */}
+  }, [props.xAxis, props.yAxis]);
 
   const chartStyles  = css({
     width:'100%',
-    height:'auto',
+    height:'100%',
     boxSizing:'border-box',
     padding: 10,
     '& label':{
@@ -77,8 +79,8 @@ export const ScatterPlot = props => {
 
     const context = React.useContext(CXContext);
 
-    const [xAxis, setXAxis] = React.useState()
-    const [yAxis, setYAxis] = React.useState()
+    const [xAxis, setXAxis] = React.useState("-")
+    const [yAxis, setYAxis] = React.useState("-")
 
     const handleChangeX = (event) => {
         let name = event.target.value;
@@ -93,12 +95,14 @@ export const ScatterPlot = props => {
 
     return (
         <div>
-            <PlotTemplate
-                chartFunction={scatterPlotFunction}
-                title={props.dimName}
-                dimName={props.dimName}
-                removeChart={props.removeChart}
-            />
+            {(xAxis !== '-' && yAxis !== '-') ?
+                <PlotTemplate
+                    chartFunction={scatterPlotFunction}
+                    removeChart={props.removeChart}
+                    xAxis={xAxis}
+                    yAxis={yAxis}
+                /> : <div>Choose xAxis and yAxis</div>
+            }
             <div style={{'position': 'absolute', top: 10, right: 100}}>
                 <select onChange={handleChangeY} value={yAxis}>
                     <option>Y axis</option>
