@@ -5,6 +5,7 @@ import { ScatterPlot } from './filters/ScatterPlot';
 import { GroupFilter } from './filters/GroupFilter';
 import { TextFilter } from './filters/TextFilter';
 import { DataTable } from './DataTable';
+import OmeroData from './omero/OmeroData';
 import DimensionChooser from './DimensionChooser';
 import { css } from "glamor";
 
@@ -19,6 +20,14 @@ var centrePanelStyle = css({
     flex: '1 1 auto',
     overflow: 'auto',
     height: '50%',
+    display: 'flex',
+    position: 'relative',
+})
+var rowStyle = css({
+    flex: '1 1 auto',
+    overflow: 'auto',
+    width: '50%',
+    position: 'relative',
 })
 
 const CrossFilterApp = props => {
@@ -59,7 +68,12 @@ const CrossFilterApp = props => {
                 </div>
                 <div className="centrePanel" {...centreStyle}>
                     <div {...centrePanelStyle}>
-                        <ScatterPlot dimName={"Count"} removeChart={removeFilter}/>
+                        <div {...rowStyle}>
+                            <ScatterPlot dimName={"Count"} removeChart={removeFilter}/>
+                        </div>
+                        <div {...rowStyle}>
+                            <OmeroData />
+                        </div>
                     </div>
                     <div {...centrePanelStyle}>
                         <DataTable />

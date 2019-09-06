@@ -42,7 +42,6 @@ const PlotTemplate = props => {
   const ndx = context.ndx;
   const div = React.useRef(null);
   React.useEffect(() => {
-    console.log('useEffect', props.xAxis, props.yAxis);
     const newChart = props.chartFunction(div.current, ndx, props.xAxis, props.yAxis); // chartfunction takes the ref and does something with it
 
     newChart.render();
@@ -78,9 +77,11 @@ const PlotTemplate = props => {
 export const ScatterPlot = props => {
 
     const context = React.useContext(CXContext);
+    const numberCols = context.columns.filter(col => col.type == 'number');
 
-    const [xAxis, setXAxis] = React.useState("-")
-    const [yAxis, setYAxis] = React.useState("-")
+    // Start by plotting the first 2 dimensions we have
+    const [xAxis, setXAxis] = React.useState(numberCols[0].name)
+    const [yAxis, setYAxis] = React.useState(numberCols[1].name)
 
     const handleChangeX = (event) => {
         let name = event.target.value;
@@ -90,8 +91,6 @@ export const ScatterPlot = props => {
         let name = event.target.value;
         setYAxis(name);
     }
-
-    const numberCols = context.columns.filter(col => col.type == 'number');
 
     return (
         <div>
@@ -103,17 +102,17 @@ export const ScatterPlot = props => {
                     yAxis={yAxis}
                 /> : <div>Choose xAxis and yAxis</div>
             }
-            <div style={{'position': 'absolute', top: 10, right: 100}}>
+            <div style={{'position': 'absolute', top: 10, right: 10}}>
+                <label>Y axis:</label>
                 <select onChange={handleChangeY} value={yAxis}>
-                    <option>Y axis</option>
                     {numberCols.map(col => (
                         <option value={col.name} key={col.name}>
                             {col.name}
                         </option>
                     ))}
                 </select>
+                <label>X axis:</label>
                 <select onChange={handleChangeX} value={xAxis}>
-                    <option>X axis</option>
                     {numberCols.map(col => (
                         <option value={col.name} key={col.name}>
                             {col.name}
