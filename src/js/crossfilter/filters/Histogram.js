@@ -23,6 +23,7 @@ const histogramFunc = (divRef, ndx, dimName) => {
         .x(scaleLinear().domain([min_value,max_value]))
         .xUnits(function(){return number_of_bins})
         .centerBar(true)
+        .elasticY(true)
         .xAxis();
     
     // histogram.on('filtered', function(chart, filter){

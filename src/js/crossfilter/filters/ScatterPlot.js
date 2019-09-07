@@ -22,6 +22,7 @@ const scatterPlotFunction = (divRef, ndx, xAxis, yAxis) => {
         .clipPadding(10)
         .xAxisLabel(xAxis)
         .yAxisLabel(yAxis)
+        .elasticY(true)
         .brushOn(false)
         .dimension(scatterDim)
         .group(sumGroup)
