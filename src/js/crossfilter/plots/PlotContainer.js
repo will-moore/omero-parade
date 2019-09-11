@@ -1,36 +1,46 @@
 import React from "react";
 import { ScatterPlot } from "./ScatterPlot";
+import { BoxPlot } from "./BoxPlot";
 import { CXContext } from "../DataContext";
 
 export const PlotContainer = props => {
 
     const context = React.useContext(CXContext);
     const numberCols = context.columns.filter(col => col.type == 'number');
+    const stringCols = context.columns.filter(col => col.type != 'number');
 
     // Start by plotting the first 2 dimensions we have
-    const [xAxis, setXAxis] = React.useState(numberCols[0].name)
-    const [yAxis, setYAxis] = React.useState(numberCols[1].name)
+    const [xAxis, setXAxis] = React.useState(numberCols[0])
+    const [yAxis, setYAxis] = React.useState(numberCols[1])
 
     const handleChangeX = (event) => {
         let name = event.target.value;
-        setXAxis(name);
+        let col = context.columns.find(col => col.name == name);
+        setXAxis(col);
     }
     const handleChangeY = (event) => {
         let name = event.target.value;
-        setYAxis(name);
+        let col = context.columns.find(col => col.name == name);
+        setYAxis(col);
     }
 
     return (
         <div>
-            {(xAxis !== '-' && yAxis !== '-') ?
-                <ScatterPlot
-                    xAxis={xAxis}
-                    yAxis={yAxis}
-                /> : <div>Choose xAxis and yAxis</div>
+            {
+                xAxis.type === 'number' ? (
+                    <ScatterPlot
+                        xAxis={xAxis.name}
+                        yAxis={yAxis.name}
+                    />) : (
+                    <BoxPlot
+                        xAxis={xAxis.name}
+                        yAxis={yAxis.name}
+                    />)
             }
+
             <div style={{'position': 'absolute', top: 10, right: 10}}>
                 <label>Y axis:</label>
-                <select onChange={handleChangeY} value={yAxis}>
+                <select onChange={handleChangeY} value={yAxis.name}>
                     {numberCols.map(col => (
                         <option value={col.name} key={col.name}>
                             {col.name}
@@ -38,12 +48,21 @@ export const PlotContainer = props => {
                     ))}
                 </select>
                 <label>X axis:</label>
-                <select onChange={handleChangeX} value={xAxis}>
-                    {numberCols.map(col => (
-                        <option value={col.name} key={col.name}>
-                            {col.name}
-                        </option>
-                    ))}
+                <select onChange={handleChangeX} value={xAxis.name}>
+                    <optgroup label="Scatter Plot">
+                        {numberCols.map(col => (
+                            <option value={col.name} key={col.name}>
+                                {col.name}
+                            </option>
+                        ))}
+                    </optgroup>
+                    <optgroup label="Box and whisker Plot">
+                        {stringCols.map(col => (
+                            <option value={col.name} key={col.name}>
+                                {col.name}
+                            </option>
+                        ))}
+                    </optgroup>
                 </select>
             </div>
         </div>

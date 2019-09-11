@@ -8,32 +8,39 @@ import { CXContext } from "../DataContext";
 const scatterPlotFunction = (divRef, ndx, xAxis, yAxis) => {
 
     var x = ndx.dimension(function(d) {return d[xAxis] });
-    var max_value = x.top(1)[0][xAxis];
-    var min_value = x.bottom(1)[0][xAxis];
+    // var max_value = x.top(1)[0][xAxis];
+    // var min_value = x.bottom(1)[0][xAxis];
 
-    var scatterDim = ndx.dimension(function(d) {return [d[xAxis], d[yAxis]];});
-    var sumGroup = scatterDim.group()    
+    // var scatterDim = ndx.dimension(function(d) {return [d[xAxis], d[yAxis]];});
+    // var sumGroup = scatterDim.group()
+    var yGroup = x.group().reduce(
+        function(p,v) {
+          // keep array sorted for efficiency
+          p.splice(d3.bisectLeft(p, v[yAxis]), 0, v[yAxis]);
+          return p;
+        },
+        function(p,v) {
+          p.splice(d3.bisectLeft(p, v[yAxis]), 1);
+          return p;
+        },
+        function() {
+          return [];
+        }
+    );
 
-
-    var scatter1 = dc.scatterPlot(divRef)
+    return dc.boxPlot(divRef)
         .width(500)
         .height(250)
         .margins({top:10,bottom:30,right:20,left:50})
-        .dimension(scatterDim)
-        .group(sumGroup)
-        .symbolSize(5)
-        .clipPadding(10)
+        .dimension(x)
+        .group(yGroup)
         .xAxisLabel(xAxis)
         .yAxisLabel(yAxis)
-        .excludedOpacity(0.5)
-        .elasticY(true)    // ignored?
-        .x(scaleLinear().domain([min_value,max_value]));
-    // scatter1.yAxis().ticks(5);
-    return scatter1;
+        .elasticY(true);
 }
 
 
-export const ScatterPlot = props => {
+export const BoxPlot = props => {
     /*
     We render the dc chart using an effect. We want to pass the chart as a prop after the dc call,
     but there is nothing by default to trigger a re-render and the prop, by default would be undefined.

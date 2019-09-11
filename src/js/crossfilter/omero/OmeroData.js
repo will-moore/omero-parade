@@ -30,7 +30,7 @@ const OmeroData = props => {
             {filteredData.length < 100 ? 
                 filteredData.map(d => (
                     <img key={d.Image} src={`/webclient/render_thumbnail/${ d.Image }/`} />
-                )) : <div>sdf</div>
+                )) : <div>(too many to show)</div>
             }
         </div>
     );
