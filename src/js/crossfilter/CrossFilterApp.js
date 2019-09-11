@@ -1,7 +1,7 @@
 import React from 'react';
 import { DataContext } from './DataContext';
 import { Histogram } from './filters/Histogram';
-import { ScatterPlot } from './filters/ScatterPlot';
+import { PlotContainer } from './plots/PlotContainer';
 import { GroupFilter } from './filters/GroupFilter';
 import { TextFilter } from './filters/TextFilter';
 import { DataTable } from './DataTable';
@@ -69,7 +69,7 @@ const CrossFilterApp = props => {
                 <div className="centrePanel" {...centreStyle}>
                     <div {...centrePanelStyle}>
                         <div {...rowStyle}>
-                            <ScatterPlot dimName={"Count"} removeChart={removeFilter}/>
+                            <PlotContainer/>
                         </div>
                         <div {...rowStyle}>
                             <OmeroData />
