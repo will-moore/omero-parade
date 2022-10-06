@@ -48,4 +48,8 @@ urlpatterns = [
     # Get the table data
     url(r'^data/(?P<data_name>[\w+\/=]+)/$', views.get_data,
         name='parade_data'),
+
+    # Plot data. Uses data_name as for 
+    url(r'^plot/(?P<data_name_x>[\w+\/=]+)/(?P<data_name_y>[\w+\/=]+)/$',
+        views.plot_data, name='parade_plot'),
 ]

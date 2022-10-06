@@ -22,9 +22,14 @@ import omero
 import omero.clients
 
 from base64 import b64decode
+import json
 from distutils.version import LooseVersion
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+from matplotlib.ticker import LinearLocator
 
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, HttpResponse
 from omeroweb.webclient.decorators import login_required
 from omero.rtypes import rlong, unwrap
 from django.shortcuts import render
@@ -159,7 +164,55 @@ def numpy_to_json(value):
 
 
 @login_required()
+def plot_data(request, data_name_x, data_name_y, conn=None, **kwargs):
+
+    x_data = _get_data(request, data_name_x, conn)
+    y_data = _get_data(request, data_name_y, conn)
+
+    x_axis = b64decode(data_name_x).decode()
+    y_axis = b64decode(data_name_y).decode()
+    for axis, data in zip([x_axis, y_axis], [x_data, y_data]):
+        if 'data' not in data:
+            return JsonResponse({"Error": "data not found for %s" % axis})
+
+    # unwrap - make sure all keys are strings
+    x_data = json.loads(json.dumps(x_data['data']))
+    y_data = json.loads(json.dumps(y_data['data']))
+
+    # combine data
+    x_values = []
+    y_values = []
+
+    for key, value in x_data.items():
+        if key in y_data:
+            x_values.append(value)
+            y_values.append(y_data[key])
+
+    # https://spapas.github.io/2021/02/08/django-matplotlib/
+    fig, ax = plt.subplots(figsize=(10,4))
+    ax.scatter(x_values, y_values, color = "#1f4579")
+
+    fig.autofmt_xdate()
+    # ax.set_title('parade data')
+    ax.set_ylabel(y_axis)
+    ax.set_xlabel(x_axis)
+    ax.grid(linestyle="--", linewidth=0.5, color='.25', zorder=-10)
+    ax.yaxis.set_minor_locator(LinearLocator(25))
+
+    response = HttpResponse(content_type='image/png')
+    fig.savefig(response)
+    return response
+
+
+@login_required()
 def get_data(request, data_name, conn=None, **kwargs):
+
+    rsp_json = _get_data(request, data_name, conn)
+    return JsonResponse(rsp_json)
+
+
+def _get_data(request, data_name, conn):
+
     # Avoid e.g. int64 is not JSON serializable
     try:
         data_name = b64decode(data_name)
@@ -196,8 +249,8 @@ def get_data(request, data_name, conn=None, **kwargs):
                         rv['histogram'] = histogram.tolist()
                     except TypeError:
                         pass
-                    return JsonResponse(rv)
+                    return rv
         except ImportError:
             pass
 
-    return JsonResponse({'Error': 'Data provider not found'})
+    return {'Error': 'Data provider not found'}
